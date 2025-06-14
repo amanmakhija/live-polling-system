@@ -40,6 +40,7 @@ export default function Question({
   };
 
   useEffect(() => {
+    setTimeLeft(duration);
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -51,7 +52,7 @@ export default function Question({
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [question]);
 
   return (
     <>

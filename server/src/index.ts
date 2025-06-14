@@ -130,21 +130,21 @@ function finishPoll() {
   responses = {};
 }
 
-app.post("/api/polls", (req, res) => {
+app.post("/polls", (req, res) => {
   const { question, options, correctAnswers, duration } = req.body;
   pastPolls.push({ question, options, correctAnswers, duration });
   res.status(201).json({ message: "Poll saved" });
 });
 
-app.get("/api/past-polls", (_req, res) => {
+app.get("/past-polls", (_req, res) => {
   res.json(pastPolls);
 });
 
-app.get("/api/students", (_req, res) => {
+app.get("/students", (_req, res) => {
   res.json(Object.entries(students).map(([id, name]) => ({ id, name })));
 });
 
-app.get("/api/current-question", (_req, res) => {
+app.get("/current-question", (_req, res) => {
   if (currentQuestion) {
     res.json(currentQuestion);
   } else {
