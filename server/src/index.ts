@@ -3,6 +3,7 @@ import http from "http";
 import cors from "cors";
 import { Server, Socket } from "socket.io";
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const io = new Server(server, {
   },
 });
 
+app.use(express.static(path.join(__dirname, "../../client/dist")));
 app.use(cors());
 app.use(express.json());
 
@@ -38,6 +40,7 @@ let pastPolls: {
   options: string[];
   correctAnswers: number[];
   duration: number;
+  responses?: Responses;
 }[] = [];
 
 io.on("connection", (socket: Socket) => {
@@ -120,32 +123,37 @@ function finishPoll() {
       options: currentQuestion.options,
       correctAnswers: currentQuestion.correctAnswers,
       duration: currentQuestion.duration,
+      responses: { ...responses },
     });
   }
   currentQuestion = null;
   responses = {};
 }
 
-app.post("/polls", (req, res) => {
+app.post("/api/polls", (req, res) => {
   const { question, options, correctAnswers, duration } = req.body;
   pastPolls.push({ question, options, correctAnswers, duration });
   res.status(201).json({ message: "Poll saved" });
 });
 
-app.get("/past-polls", (_req, res) => {
-  res.json({ pastPolls, responses });
+app.get("/api/past-polls", (_req, res) => {
+  res.json(pastPolls);
 });
 
-app.get("/students", (_req, res) => {
+app.get("/api/students", (_req, res) => {
   res.json(Object.entries(students).map(([id, name]) => ({ id, name })));
 });
 
-app.get("/current-question", (_req, res) => {
+app.get("/api/current-question", (_req, res) => {
   if (currentQuestion) {
     res.json(currentQuestion);
   } else {
     res.status(404).json({ message: "No current question" });
   }
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../client/dist", "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;

@@ -8,17 +8,15 @@ import { useNavigate } from "react-router-dom";
 export default function QuestionHistory() {
   const navigate = useNavigate();
   const [pollHistory, setPollHistory] = useState<QuestionType[]>([]);
-  const [responses, setResponses] = useState<Record<string, string>>({});
 
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/past-polls`)
       .then((res) => {
-        const { pastPolls, responses } = res.data;
-        setPollHistory(pastPolls || []);
-        setResponses(responses || {});
+        console.log("Poll History:", res);
+        setPollHistory(res.data || []);
       })
-      .catch((err) => {
+      .catch(() => {
         navigate("/teacher");
       });
   }, []);
@@ -37,7 +35,7 @@ export default function QuestionHistory() {
             questionNumber: pollHistory.indexOf(poll) + 1,
           }}
           submitted={true}
-          responses={responses}
+          responses={poll.responses || {}}
           isTeacher={true}
           isPollHistory={true}
         />
