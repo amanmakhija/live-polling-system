@@ -9,10 +9,15 @@
     "start-project": "cd server && npm start",
     "build": "npm run init-project"
   },
+  "engines": {
+    "node": ">=20.10.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "concurrently": "^9.1.2"
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
   }
 }
