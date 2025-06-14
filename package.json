@@ -4,10 +4,9 @@
   "description": "��#\u0000 \u0000l\u0000i\u0000v\u0000e\u0000-\u0000p\u0000o\u0000l\u0000l\u0000i\u0000n\u0000g\u0000-\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000\r\u0000 \u0000",
   "main": "index.js",
   "scripts": {
-    "init-project": "npm install && npm run install-frontend-deps && npm run install-backend-deps",
-    "install-frontend-deps": "cd client && npm install && npm run build",
-    "install-backend-deps": "cd ../server && npm install && npm run build",
-    "start-project": "cd server && npm start",
+    "init-project": "npm install && npm run install-deps",
+    "install-deps": "concurrently \"cd client && npm install && npm run build\" \"cd server && npm install && npm run build\"",
+    "start-project": "concurrently \"cd client && npm run dev\" \"cd server && npm start\"",
     "build": "npm run init-project"
   },
   "engines": {
