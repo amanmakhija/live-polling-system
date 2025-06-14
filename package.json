@@ -5,13 +5,13 @@
   "scripts": {
     "init-project": "npm install && npm run install-deps",
     "install-deps": "concurrently \"cd client && npm install && npm run build\" \"cd server && npm install && npm run build\"",
-    "start-project": "cd server && npm start",
+    "start": "cd server && npm start",
     "build": "npm run init-project"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^9.1.2"
   }
 }
